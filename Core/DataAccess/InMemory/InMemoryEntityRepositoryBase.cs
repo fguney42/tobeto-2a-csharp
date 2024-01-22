@@ -38,6 +38,7 @@ public abstract class InMemoryEntityRepositoryBase<TEntity, TEntityId>
 
     public void Update(TEntity entity)
     {
+        
         entity.UpdateAt = DateTime.UtcNow;
     }
 }
