@@ -3,6 +3,7 @@ using Business.Abstract;
 using Business.Concrete;
 using Business.Requests.Brand;
 using Business.Responses.Brand;
+using Business.Responses.Customer;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -15,12 +16,12 @@ namespace WebAPI.Controllers;
 [ApiController]
 public class CustomersController : ControllerBase
 {
-    private readonly IBrandService _brandService; // Field
+    private readonly ICustomerService _customerService; // Field
 
-    public CustomersController(IBrandService brandService)
+    public CustomersController(ICustomerService customerService)
     {
         // Her HTTP Request için yeni bir Controller nesnesi oluşturulur.
-        _brandService = brandService;
+        _customerService = customerService;
         // Daha sonra IoC Container yapımızı kurduğumuz Dependency Injection ile daha verimli hale getiricez.
     }
 
@@ -34,7 +35,7 @@ public class CustomersController : ControllerBase
     [HttpGet] // GET http://localhost:5245/api/brands
     public GetBrandListResponse GetList([FromQuery] GetBrandListRequest request) // Referans tipleri varsayılan olarak request body'den alır.
     {
-        GetBrandListResponse response = _brandService.GetList(request);
+        GetBrandListResponse response = _customerService.GetList(request);
         return response; // JSON
     }
 
@@ -44,7 +45,7 @@ public class CustomersController : ControllerBase
     {
         try
         {
-            AddCustomerResponse response = _brandService.Add(request);
+            AddCustomerResponse response = _customerService.Add(request);
 
       
             return CreatedAtAction(nameof(GetList), response); 

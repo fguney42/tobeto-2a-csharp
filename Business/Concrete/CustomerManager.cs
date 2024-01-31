@@ -48,6 +48,24 @@ namespace Business.Concrete
             return response;
         }
 
-      
+        public AddCustomerResponse Delete(AddBrandRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public AddCustomerResponse Get(AddBrandRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public AddCustomerResponse GetList(GetBrandListRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public AddCustomerResponse Update(AddBrandRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
