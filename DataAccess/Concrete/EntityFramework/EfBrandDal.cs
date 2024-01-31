@@ -1,39 +1,32 @@
 ﻿using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework.Context;
 using Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFramework;
+
 internal class EfBrandDal : IBrandDal
 {
-    MyDbContext _dbContext;
-    public void Add(Brand entity)
+    public Brand Add(Brand entity)
     {
-       _dbContext.Add(entity);
+        throw new NotImplementedException();
     }
 
-    public void Delete(Brand entity)
+    public Brand Delete(Brand entity, bool softDelete)
     {
-        Brand deletedBrand = _dbContext.Brands.FirstOrDefault(p => p.Name == entity.Name);
-        if (deletedBrand != null)
-        {
-            _dbContext.Remove(deletedBrand);
-        }
+        throw new NotImplementedException();
     }
 
-    public Brand? GetById(int id)
+    public Brand? Get(Func<Brand, bool> predicate)
     {
-        Brand getById = _dbContext.Brands.FirstOrDefault(p=>p.Id == id);
-        return getById != null ? (getById) : null;
+        throw new NotImplementedException();
     }
 
-    public IList<Brand> GetList()
+    public IList<Brand> GetList(Func<Brand, bool>? predicate = null)
     {
-        return _dbContext.Brands.ToList();
+        throw new NotImplementedException();
     }
 
-    public void Update(Brand entity)
+    public Brand Update(Brand entity)
     {
-        Brand updatedBrand = _dbContext.Brands.FirstOrDefault(p=> p.Id == entity.Id);
-        updatedBrand.Name = entity.Name;
+        throw new NotImplementedException();
     }
 }
