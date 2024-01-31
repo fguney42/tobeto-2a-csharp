@@ -48,7 +48,7 @@ public class ModelManager : IModelService
         ////TODO: bunlari fluent validation ile buradan ayrıştır.
 
         // fluent validation
-        ValidationTool.Validate(new AddModelRequestValidator(), request);
+        ValidationTool.Validate(new AddCustomerlRequestValidator(), request);
 
         //ValidationResult result = validator.Validate(request);
         //if(!result.IsValid)

@@ -1,10 +1,16 @@
 ﻿using AutoMapper;
 using Business.Abstract;
 using Business.BusinessRules;
+using Business.Profiles.Validation.FluentValidation.Customer;
+using Business.Profiles.Validation.FluentValidation.Model;
 using Business.Requests.Brand;
 using Business.Responses.Brand;
+using Business.Responses.Customer;
+using Business.Responses.Model;
+using Core.CrossCuttingConcerns.Validation.FluentValidation;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,29 +32,22 @@ namespace Business.Concrete
             _mapper = mapper;
         }
 
-        public AddBrandResponse Add(AddBrandRequest request)
+        public AddCustomerResponse Add(AddBrandRequest request)
         {
-            throw new NotImplementedException();
+            ValidationTool.Validate(new AddCustomerRequestValidator(), request);
+       
+            _customerBusinessRules.CheckIfModelNameExists(request.Name);
+         
+            var modelToAdd = _mapper.Map<Customer>(request);
+
+          
+            Customer addedModel = _customerDal.Add(modelToAdd);
+
+           
+            var response = _mapper.Map<AddCustomerResponse>(addedModel);
+            return response;
         }
 
-        public AddBrandResponse Delete(AddBrandRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AddBrandResponse Get(AddBrandRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
-        public GetBrandListResponse GetList(GetBrandListRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AddBrandResponse Update(AddBrandRequest request)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

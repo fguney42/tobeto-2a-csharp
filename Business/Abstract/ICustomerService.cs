@@ -1,5 +1,6 @@
 ﻿using Business.Requests.Brand;
 using Business.Responses.Brand;
+using Business.Responses.Customer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Business.Abstract
 {
     public interface ICustomerService
     {
-        public AddBrandResponse Add(AddBrandRequest request);
-        public AddBrandResponse Update(AddBrandRequest request);
-        public AddBrandResponse Delete(AddBrandRequest request);
-        public AddBrandResponse Get(AddBrandRequest request);
-        public GetBrandListResponse GetList(GetBrandListRequest request);
+        public AddCustomerResponse Add(AddBrandRequest request);
+        public AddCustomerResponse Update(AddBrandRequest request);
+        public AddCustomerResponse Delete(AddBrandRequest request);
+        public AddCustomerResponse Get(AddBrandRequest request);
+        public AddCustomerResponse GetList(GetBrandListRequest request);
     }
 }

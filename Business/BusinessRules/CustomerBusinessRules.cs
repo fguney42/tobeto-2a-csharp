@@ -28,7 +28,7 @@ namespace Business.BusinessRules
         public void CheckIfCustomerExists(Customer customer)
         {
             if (customer is null)
-                throw new NotFoundException("Model not found.");
+                throw new NotFoundException("Customer not found.");
         }
     }
 }
