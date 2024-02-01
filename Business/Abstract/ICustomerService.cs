@@ -1,4 +1,6 @@
-﻿using Business.Requests.Brand;
+﻿using Business.Requests;
+using Business.Requests.Brand;
+using Business.Requests.Customer;
 using Business.Responses.Brand;
 using Business.Responses.Customer;
 using System;
@@ -11,10 +13,14 @@ namespace Business.Abstract
 {
     public interface ICustomerService
     {
-        public AddCustomerResponse Add(AddBrandRequest request);
-        public AddCustomerResponse Update(AddBrandRequest request);
-        public AddCustomerResponse Delete(AddBrandRequest request);
-        public AddCustomerResponse Get(AddBrandRequest request);
-        public AddCustomerResponse GetList(GetBrandListRequest request);
+        GetCustomerListResponse GetList(GetCustomerListRequest request);
+
+        GetCustomerByIdResponse GetById(GetCustomerByIdRequest request);
+
+        AddCustomerResponse Add(AddCustomerRequest request);
+
+        UpdateCustomerResponse Update(UpdateCustomerRequest request);
+
+        DeleteCustomerResponse Delete(DeleteCustomerRequest request);
     }
 }

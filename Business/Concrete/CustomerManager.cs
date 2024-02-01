@@ -2,20 +2,12 @@
 using Business.Abstract;
 using Business.BusinessRules;
 using Business.Profiles.Validation.FluentValidation.Customer;
-using Business.Profiles.Validation.FluentValidation.Model;
-using Business.Requests.Brand;
-using Business.Responses.Brand;
+using Business.Requests;
+using Business.Requests.Customer;
 using Business.Responses.Customer;
-using Business.Responses.Model;
 using Core.CrossCuttingConcerns.Validation.FluentValidation;
 using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
@@ -32,40 +24,57 @@ namespace Business.Concrete
             _mapper = mapper;
         }
 
-        public AddCustomerResponse Add(AddBrandRequest request)
+        public AddCustomerResponse Add(AddCustomerRequest request)
         {
             ValidationTool.Validate(new AddCustomerRequestValidator(), request);
-       
-            _customerBusinessRules.CheckIfModelNameExists(request.Name);
-         
-            var modelToAdd = _mapper.Map<Customer>(request);
+            var customerToAdd = _mapper.Map<Customer>(request);
 
-          
-            Customer addedModel = _customerDal.Add(modelToAdd);
+            // Data operations
+            Customer addedCustomer = _customerDal.Add(customerToAdd);
 
-           
-            var response = _mapper.Map<AddCustomerResponse>(addedModel);
+            // Mapping & response
+            var response = _mapper.Map<AddCustomerResponse>(addedCustomer);
             return response;
         }
 
-        public AddCustomerResponse Delete(AddBrandRequest request)
+        public DeleteCustomerResponse Delete(DeleteCustomerRequest request)
         {
-            throw new NotImplementedException();
+            Customer? customerToDelete = _customerDal.Get(predicate: customer => customer.Id == request.Id);
+            _customerBusinessRules.CheckIfCustomerExists(customerToDelete);
+
+            Customer deletedCustomer = _customerDal.Delete(customerToDelete);
+
+            var response = _mapper.Map<DeleteCustomerResponse>(deletedCustomer);
+            return response;
         }
 
-        public AddCustomerResponse Get(AddBrandRequest request)
+        public GetCustomerByIdResponse GetById(GetCustomerByIdRequest request)
         {
-            throw new NotImplementedException();
+            Customer? customer = _customerDal.Get(predicate: customer => customer.Id == request.Id);
+            _customerBusinessRules.CheckIfCustomerExists(customer);
+
+            var response = _mapper.Map<GetCustomerByIdResponse>(customer);
+            return response;
         }
 
-        public AddCustomerResponse GetList(GetBrandListRequest request)
+        public GetCustomerListResponse GetList(GetCustomerListRequest request)
         {
-            throw new NotImplementedException();
+            IList<Customer> customerList = _customerDal.GetList().ToList();
+
+            var response = _mapper.Map<GetCustomerListResponse>(customerList);
+            return response;
         }
 
-        public AddCustomerResponse Update(AddBrandRequest request)
+        public UpdateCustomerResponse Update(UpdateCustomerRequest request)
         {
-            throw new NotImplementedException();
+            Customer? customerToUpdate = _customerDal.Get(predicate: customer => customer.Id == request.Id);
+            _customerBusinessRules.CheckIfCustomerExists(customerToUpdate);
+
+            customerToUpdate = _mapper.Map(request, customerToUpdate);
+            Customer updatedCustomer = _customerDal.Update(customerToUpdate);
+
+            var response = _mapper.Map<UpdateCustomerResponse>(updatedCustomer);
+            return response;
         }
     }
 }

@@ -1,67 +1,65 @@
-﻿using Business;
-using Business.Abstract;
-using Business.Concrete;
-using Business.Requests.Brand;
-using Business.Responses.Brand;
+﻿using Business.Abstract;
+using Business.Requests;
+using Business.Requests.Customer;
 using Business.Responses.Customer;
-using DataAccess.Abstract;
-using DataAccess.Concrete.InMemory;
-using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPI.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-public class CustomersController : ControllerBase
+namespace WebAPI.Controllers
 {
-    private readonly ICustomerService _customerService; // Field
-
-    public CustomersController(ICustomerService customerService)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CustomersController : ControllerBase
     {
-        // Her HTTP Request için yeni bir Controller nesnesi oluşturulur.
-        _customerService = customerService;
-        // Daha sonra IoC Container yapımızı kurduğumuz Dependency Injection ile daha verimli hale getiricez.
-    }
+        private readonly ICustomerService _customerService;
 
-    //[HttpGet]
-    //public ActionResult<string> //IActionResult
-    //GetList()
-    //{
-    //    return Ok("BrandsController");
-    //}
+        public CustomersController(ICustomerService customerService)
+        {
+            _customerService = customerService;
+        }
 
-    [HttpGet] // GET http://localhost:5245/api/brands
-    public GetBrandListResponse GetList([FromQuery] GetBrandListRequest request) // Referans tipleri varsayılan olarak request body'den alır.
-    {
-        GetBrandListResponse response = _customerService.GetList(request);
-        return response; // JSON
-    }
+        [HttpGet] // GET http://localhost:5245/api/customers
+        public ActionResult<GetCustomerListResponse> GetList([FromQuery] GetCustomerListRequest request)
+        {
+            GetCustomerListResponse response = _customerService.GetList(request);
+            return Ok(response);
+        }
 
-    //[HttpPost("/add")] // POST http://localhost:5245/api/brands/add
-    [HttpPost] // POST http://localhost:5245/api/brands
-    public ActionResult<AddBrandResponse> Add(AddBrandRequest request)
-    {
-        try
+        [HttpGet("{Id}")] // GET http://localhost:5245/api/customers/1
+        public ActionResult<GetCustomerByIdResponse> GetById([FromRoute] GetCustomerByIdRequest request)
+        {
+            GetCustomerByIdResponse response = _customerService.GetById(request);
+            return Ok(response);
+        }
+
+        [HttpPost] // POST http://localhost:5245/api/customers
+        public ActionResult<AddCustomerResponse> Add([FromBody] AddCustomerRequest request)
         {
             AddCustomerResponse response = _customerService.Add(request);
-
-      
-            return CreatedAtAction(nameof(GetList), response); 
-        }
-        catch (Core.CrossCuttingConcerns.Exceptions.BusinessException exception)
-        {
-            return BadRequest(
-                new Core.CrossCuttingConcerns.Exceptions.BusinessProblemDetails()
-                {
-                    Title = "Business Exception",
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = exception.Message,
-                    Instance = HttpContext.Request.Path
-                }
+            return CreatedAtAction( // 201 Created
+                actionName: nameof(GetById),
+                routeValues: new { Id = response.Id },
+                value: response
             );
-            // 400 Bad Request
+        }
+
+        [HttpPut("{Id}")] // PUT http://localhost:5245/api/customers/1
+        public ActionResult<UpdateCustomerResponse> Update(
+            [FromRoute] int Id,
+            [FromBody] UpdateCustomerRequest request
+        )
+        {
+            if (Id != request.Id)
+                return BadRequest();
+
+            UpdateCustomerResponse response = _customerService.Update(request);
+            return Ok(response);
+        }
+
+        [HttpDelete("{Id}")] // DELETE http://localhost:5245/api/customers/1
+        public ActionResult<DeleteCustomerResponse> Delete([FromRoute] DeleteCustomerRequest request)
+        {
+            DeleteCustomerResponse response = _customerService.Delete(request);
+            return Ok(response);
         }
     }
 }
