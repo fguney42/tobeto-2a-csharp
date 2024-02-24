@@ -1,6 +1,10 @@
-﻿namespace Business.Responses.Model;
+﻿using Business.Dtos.Model;
 
-public class GetModelListResponse
+namespace Business.Responses.Model
 {
-    public ICollection<ModelListItemDto> Items { get; set; }
+    public class GetModelListResponse
+    {
+        public ICollection<ModelListItemDto> Items { get; set; }
+    }
 }
+

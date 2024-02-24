@@ -1,5 +1,5 @@
 ﻿using Business.Dtos.User;
-using System;
+
 namespace Business.Dtos.IndividualCustomer
 {
     public class IndividualCustomerListItemDto

@@ -2,10 +2,13 @@
 using Business.Abstract;
 using Business.BusinessRules;
 using Business.Profiles.Validation.FluentValidation.User;
-using Business.Requests;
 using Business.Requests.User;
 using Business.Responses.User;
 using Core.CrossCuttingConcerns.Validation.FluentValidation;
+using Core.Entities;
+using Core.Utilities.Hashing;
+using Core.Utilities.Security;
+using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using Entities.Concrete;
 
@@ -14,59 +17,40 @@ namespace Business.Concrete
     public class UserManager : IUserService
     {
         private readonly IUserDal _userDal;
-        private readonly UserBusinessRules _userBusinessRules;
-        private readonly IMapper _mapper;
+        private ITokenHelper _tokenHelper;
 
-        public UserManager(IUserDal userDal, UserBusinessRules userBusinessRules, IMapper mapper)
+        public UserManager(IUserDal userDal, ITokenHelper tokenHelper)
         {
             _userDal = userDal;
-            _userBusinessRules = userBusinessRules;
-            _mapper = mapper;
+            _tokenHelper =  tokenHelper;
+        }
+        public AccessToken Login(LoginRequest request)
+        {
+            User? user = _userDal.Get(i => i.Email == request.Email);
+
+            bool isPasswordCorrect = HashingHelper.VerifyPassword(request.Password, user.PasswordHash, user.PasswordSalt);
+            if (!isPasswordCorrect)
+            {
+                throw new Exception("Şifre Yanlış");
+            }
+            return _tokenHelper.CreateToken(user); // using Core.Utilities.Security.JWT;
         }
 
-        public AddUserResponse Add(AddUserRequest request)
+        public void Register(RegisterRequest request)
         {
-            ValidationTool.Validate(new AddUserRequestValidator(), request);
-            _userBusinessRules.CheckIfEmailIsUnique(request.Email);
-            var userToAdd = _mapper.Map<User>(request);
-            User addedUser = _userDal.Add(userToAdd);
-            var response = _mapper.Map<AddUserResponse>(addedUser);
-            return response;
-        }
+            byte[] passwordSalt, passwordHash;
 
-        public DeleteUserResponse Delete(DeleteUserRequest request)
-        {
-            User userToDelete = _userDal.Get(predicate: user => user.Id == request.Id);
-            _userBusinessRules.CheckIfUserExists(userToDelete.Id);
-            User deletedUser = _userDal.Delete(userToDelete);
-            var response = _mapper.Map<DeleteUserResponse>(deletedUser);
-            return response;
-        }
+            HashingHelper.CreatePasswordHash(request.Password,out passwordHash, out passwordSalt);
 
+            User user = new User();
 
-        public GetUserByIdResponse GetById(GetUserByIdRequest request)
-        {
-            User user = _userDal.Get(predicate: user => user.Id == request.Id);
-            _userBusinessRules.CheckIfUserExists(user.Id);
-            var response = _mapper.Map<GetUserByIdResponse>(user);
-            return response;
-        }
+            user.Email = request.Email;
+            user.Approved = false;
+            user.PasswordSalt = passwordSalt;
+            user.PasswordHash = passwordHash;
 
-        public GetUserListResponse GetList(GetUserListRequest request)
-        {
-            IList<User> userList = _userDal.GetList().ToList();
-            var response = _mapper.Map<GetUserListResponse>(userList);
-            return response;
-        }
+            _userDal.Add(user);
 
-        public UpdateUserResponse Update(UpdateUserRequest request)
-        {
-            User userToUpdate = _userDal.Get(predicate: user => user.Id == request.Id);
-            _userBusinessRules.CheckIfUserExists(userToUpdate.Id);
-            userToUpdate = _mapper.Map(request, userToUpdate);
-            User updatedUser = _userDal.Update(userToUpdate!);
-            var response = _mapper.Map<UpdateUserResponse>(updatedUser);
-            return response;
         }
     }
 }

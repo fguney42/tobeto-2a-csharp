@@ -1,5 +1,4 @@
-﻿using System;
-namespace Business.Dtos.Fuel
+﻿namespace Business.Dtos.Fuel
 {
     public class FuelListItemDto
     {

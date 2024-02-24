@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Business.Responses.Customer
+﻿namespace Business.Responses.Customer
 {
     public class GetCustomerByIdResponse
     {
@@ -12,6 +6,5 @@ namespace Business.Responses.Customer
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-    
-}
+    }
 }

@@ -35,7 +35,7 @@ namespace Business.Concrete
         {
             IList<Car> carList = _carDal.GetList();
 
-            GetCarListResponse response = _mapper.Map<GetCarListResponse>(carList);
+            GetCarListResponse response = _mapper.Map<GetCarListResponse>(carList); // Mapping
             return response;
         }
     }

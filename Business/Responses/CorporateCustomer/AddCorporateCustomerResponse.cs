@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿// AddCorporateCustomerResponse.cs
 namespace Business.Responses.CorporateCustomer
 {
     public class AddCorporateCustomerResponse
@@ -11,5 +6,7 @@ namespace Business.Responses.CorporateCustomer
         public int Id { get; set; }
         public string CompanyName { get; set; }
         public string TaxNo { get; set; }
+
+        // You can include any additional properties that you want to return in the response
     }
 }

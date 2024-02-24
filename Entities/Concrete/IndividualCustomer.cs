@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Entities.Concrete;
 
-namespace Entities.Concrete
+public class IndividualCustomer : Customer
 {
-    public  class IndividualCustomer : Customer
-    {
-        public string NationalIdentity { get; set; }
-    }
+    public string NationalIdentity { get; set; }
+
+    // Additional properties specific to IndividualCustomer
 }

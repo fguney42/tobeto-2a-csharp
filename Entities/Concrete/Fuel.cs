@@ -1,18 +1,20 @@
 ﻿using Core.Entities;
+using System.Collections.Generic;
 
-namespace Entities.Concrete;
-
-public class Fuel : Entity<int>
+namespace Entities.Concrete
 {
-    public string Name { get; set; }
-    public ICollection<Model> Models { get; set; } = new List<Model>();
-
-    public Fuel()
+    public class Fuel : Entity<int>
     {
-    }
+        public string Name { get; set; }
+        public ICollection<Model> Models { get; set; } = new List<Model>();
 
-    public Fuel(string name)
-    {
-        Name = name;
+        public Fuel()
+        {
+        }
+
+        public Fuel(string name)
+        {
+            Name = name;
+        }
     }
 }

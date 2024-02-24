@@ -1,17 +1,18 @@
 ﻿using Core.Entities;
 
-namespace Entities.Concrete;
-
-public class Transmission : Entity<int>
+namespace Entities.Concrete
 {
-    public string Name { get; set; }
-
-    public Transmission()
+    public class Transmission : Entity<int>
     {
-    }
+        public string Name { get; set; }
 
-    public Transmission(string name)
-    {
-        Name = name;
+        public Transmission()
+        {
+        }
+
+        public Transmission(string name)
+        {
+            Name = name;
+        }
     }
 }

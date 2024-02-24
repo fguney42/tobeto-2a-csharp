@@ -1,8 +1,8 @@
-﻿using AutoMapper;
+﻿// CustomerManager
+using AutoMapper;
 using Business.Abstract;
 using Business.BusinessRules;
 using Business.Profiles.Validation.FluentValidation.Customer;
-using Business.Requests;
 using Business.Requests.Customer;
 using Business.Responses.Customer;
 using Core.CrossCuttingConcerns.Validation.FluentValidation;
@@ -26,7 +26,13 @@ namespace Business.Concrete
 
         public AddCustomerResponse Add(AddCustomerRequest request)
         {
+            // Fluent validation
             ValidationTool.Validate(new AddCustomerRequestValidator(), request);
+
+            // Business rules
+            // Add additional business rules as needed
+
+            // Mapping
             var customerToAdd = _mapper.Map<Customer>(request);
 
             // Data operations
@@ -40,7 +46,7 @@ namespace Business.Concrete
         public DeleteCustomerResponse Delete(DeleteCustomerRequest request)
         {
             Customer? customerToDelete = _customerDal.Get(predicate: customer => customer.Id == request.Id);
-            _customerBusinessRules.CheckIfCustomerExists(customerToDelete);
+            _customerBusinessRules.CheckIfCustomerExists(customerToDelete.Id);
 
             Customer deletedCustomer = _customerDal.Delete(customerToDelete);
 
@@ -51,7 +57,7 @@ namespace Business.Concrete
         public GetCustomerByIdResponse GetById(GetCustomerByIdRequest request)
         {
             Customer? customer = _customerDal.Get(predicate: customer => customer.Id == request.Id);
-            _customerBusinessRules.CheckIfCustomerExists(customer);
+            _customerBusinessRules.CheckIfCustomerExists(customer.Id);
 
             var response = _mapper.Map<GetCustomerByIdResponse>(customer);
             return response;
@@ -68,7 +74,7 @@ namespace Business.Concrete
         public UpdateCustomerResponse Update(UpdateCustomerRequest request)
         {
             Customer? customerToUpdate = _customerDal.Get(predicate: customer => customer.Id == request.Id);
-            _customerBusinessRules.CheckIfCustomerExists(customerToUpdate);
+            _customerBusinessRules.CheckIfCustomerExists(customerToUpdate.Id);
 
             customerToUpdate = _mapper.Map(request, customerToUpdate);
             Customer updatedCustomer = _customerDal.Update(customerToUpdate);

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿// AddIndividualCustomerResponse
 namespace Business.Responses.IndividualCustomer
 {
     public class AddIndividualCustomerResponse
@@ -13,5 +8,6 @@ namespace Business.Responses.IndividualCustomer
         public string LastName { get; set; }
         public string Email { get; set; }
 
+        // You can include any additional properties that you want to return in the response
     }
 }

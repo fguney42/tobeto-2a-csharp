@@ -1,6 +1,6 @@
-﻿using Core.CrossCuttingConcerns.Exceptions;
+﻿// IndividualCustomerBusinessRules
+using Core.CrossCuttingConcerns.Exceptions;
 using DataAccess.Abstract;
-using Entities.Concrete;
 
 namespace Business.BusinessRules
 {
@@ -15,8 +15,7 @@ namespace Business.BusinessRules
 
         public void CheckIfIndividualCustomerExists(int individualCustomerId)
         {
-            IndividualCustomer individualCustomer = _individualCustomerDal.Get(p => p.Id == individualCustomerId);
-
+            IndividualCustomer? individualCustomer = _individualCustomerDal.Get(ic => ic.Id == individualCustomerId);
             if (individualCustomer == null)
                 throw new NotFoundException("IndividualCustomer not found.");
         }

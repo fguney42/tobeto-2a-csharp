@@ -1,10 +1,6 @@
-﻿using Business.Requests;
+﻿// AddIndividualCustomerRequestValidator
+using Business.Requests.IndividualCustomer;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Profiles.Validation.FluentValidation.Customer
 {
@@ -13,6 +9,7 @@ namespace Business.Profiles.Validation.FluentValidation.Customer
         public AddIndividualCustomerRequestValidator()
         {
             RuleFor(x => x.UserId).NotEmpty();
+            // Add any additional rules specific to IndividualCustomer
         }
     }
 }

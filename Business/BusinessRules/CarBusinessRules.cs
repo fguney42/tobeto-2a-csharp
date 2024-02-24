@@ -6,7 +6,7 @@ namespace Business.BusinessRules
 {
     public class CarBusinessRules
     {
-        private readonly ICarDal _carDal;
+        private readonly ICarDal _carDal; // Şu anda herhangi bir business rule içinde kullanılmıyor
 
         public CarBusinessRules(ICarDal carDal)
         {
@@ -15,11 +15,11 @@ namespace Business.BusinessRules
         public void CheckIfModelYearYoungerThanTwenty(short modelYear)
         {
             DateTime now = DateTime.Now;
-            bool isYearYoungerThanTwenty = now.Year - modelYear <= 20;
+            bool isCarYoung = now.Year - modelYear <= 20;
 
-            if (!isYearYoungerThanTwenty)
+            if(!isCarYoung)
             {
-                throw new BusinessException("This car is over 20 years old");
+                throw new BusinessException("The car is not younger than 20 years.");
             }
         }
     }

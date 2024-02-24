@@ -1,6 +1,5 @@
 ﻿using Business.Requests.User;
 using FluentValidation;
-using System;
 
 namespace Business.Profiles.Validation.FluentValidation.User
 {

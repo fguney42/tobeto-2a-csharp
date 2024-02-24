@@ -1,5 +1,4 @@
-﻿using Business;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Business.Requests.Model;
 using Business.Responses.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +37,7 @@ public class ModelsController : ControllerBase
         return CreatedAtAction( // 201 Created
             actionName: nameof(GetById),
             routeValues: new { Id = response.Id }, // Anonymous object
-            // Response Header: Location=http://localhost:5245/api/models/1
+                                                   // Response Header: Location=http://localhost:5245/api/models/1
 
             value: response // Response Body: JSON
         );

@@ -1,10 +1,5 @@
-﻿using Business.Requests;
+﻿using Business.Requests.CorporateCustomer;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Profiles.Validation.FluentValidation.Customer
 {
@@ -13,6 +8,7 @@ namespace Business.Profiles.Validation.FluentValidation.Customer
         public AddCorporateCustomerRequestValidator()
         {
             RuleFor(x => x.UserId).NotEmpty();
+            // Add any additional rules specific to CorporateCustomer
         }
     }
 }

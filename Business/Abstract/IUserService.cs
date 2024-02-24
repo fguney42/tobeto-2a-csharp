@@ -1,6 +1,6 @@
 ﻿using Business.Requests.User;
-using Business.Requests;
-using Business.Responses.User;
+using Core.Utilities.Security;
+using Core.Utilities.Security.JWT;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +11,8 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
-        GetUserListResponse GetList(GetUserListRequest request);
+        void Register(RegisterRequest request);
 
-        GetUserByIdResponse GetById(GetUserByIdRequest request);
-
-        AddUserResponse Add(AddUserRequest request);
-
-        UpdateUserResponse Update(UpdateUserRequest request);
-
-        DeleteUserResponse Delete(DeleteUserRequest request);
+        AccessToken Login(LoginRequest request); //using Core.Utilities.Security.JWT; jwt
     }
 }

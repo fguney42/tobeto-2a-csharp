@@ -1,10 +1,9 @@
-﻿using AutoMapper;
+﻿// CorporateCustomerManager
+using AutoMapper;
 using Business.Abstract;
 using Business.BusinessRules;
 using Business.Profiles.Validation.FluentValidation.Customer;
-using Business.Requests;
 using Business.Requests.CorporateCustomer;
-using Business.Requests.Customer;
 using Business.Responses.CorporateCustomer;
 using Core.CrossCuttingConcerns.Validation.FluentValidation;
 using DataAccess.Abstract;
@@ -27,17 +26,26 @@ namespace Business.Concrete
 
         public AddCorporateCustomerResponse Add(AddCorporateCustomerRequest request)
         {
-           
+            // Fluent validation
             ValidationTool.Validate(new AddCorporateCustomerRequestValidator(), request);
+
+            // Business rules
+            // Add additional business rules as needed
+
+            // Mapping
             var corporateCustomerToAdd = _mapper.Map<CorporateCustomer>(request);
+
+            // Data operations
             CorporateCustomer addedCorporateCustomer = _corporateCustomerDal.Add(corporateCustomerToAdd);
+
+            // Mapping & response
             var response = _mapper.Map<AddCorporateCustomerResponse>(addedCorporateCustomer);
             return response;
         }
 
         public DeleteCorporateCustomerResponse Delete(DeleteCorporateCustomerRequest request)
         {
-            CorporateCustomer corporateCustomerToDelete = _corporateCustomerDal.Get(predicate: customer => customer.Id == request.Id);
+            CorporateCustomer? corporateCustomerToDelete = _corporateCustomerDal.Get(predicate: customer => customer.Id == request.Id);
             _corporateCustomerBusinessRules.CheckIfCorporateCustomerExists(corporateCustomerToDelete.Id);
 
             CorporateCustomer deletedCorporateCustomer = _corporateCustomerDal.Delete(corporateCustomerToDelete);
@@ -48,7 +56,7 @@ namespace Business.Concrete
 
         public GetCorporateCustomerByIdResponse GetById(GetCorporateCustomerByIdRequest request)
         {
-            CorporateCustomer corporateCustomer = _corporateCustomerDal.Get(predicate: customer => customer.Id == request.Id);
+            CorporateCustomer? corporateCustomer = _corporateCustomerDal.Get(predicate: customer => customer.Id == request.Id);
             _corporateCustomerBusinessRules.CheckIfCorporateCustomerExists(corporateCustomer.Id);
 
             var response = _mapper.Map<GetCorporateCustomerByIdResponse>(corporateCustomer);
@@ -65,7 +73,7 @@ namespace Business.Concrete
 
         public UpdateCorporateCustomerResponse Update(UpdateCorporateCustomerRequest request)
         {
-            CorporateCustomer corporateCustomerToUpdate = _corporateCustomerDal.Get(predicate: customer => customer.Id == request.Id);
+            CorporateCustomer? corporateCustomerToUpdate = _corporateCustomerDal.Get(predicate: customer => customer.Id == request.Id);
             _corporateCustomerBusinessRules.CheckIfCorporateCustomerExists(corporateCustomerToUpdate.Id);
 
             corporateCustomerToUpdate = _mapper.Map(request, corporateCustomerToUpdate);

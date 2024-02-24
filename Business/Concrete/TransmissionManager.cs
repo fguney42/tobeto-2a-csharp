@@ -23,20 +23,21 @@ namespace Business.Concrete
         public AddTransmissionResponse Add(AddTransmissionRequest request)
         {
             _transmissionBusinessRules.CheckIfTransmissionNameNotExists(request.Name);
+
             Transmission transmissionToAdd = _mapper.Map<Transmission>(request);
             _transmissionDal.Add(transmissionToAdd);
+
             AddTransmissionResponse response = _mapper.Map<AddTransmissionResponse>(transmissionToAdd);
             return response;
         }
 
-
-
         public GetTransmissionListResponse GetList(GetTransmissionListRequest request)
         {
             IList<Transmission> transmissionList = _transmissionDal.GetList();
+
             GetTransmissionListResponse response = _mapper.Map<GetTransmissionListResponse>(transmissionList);
+            
             return response;
         }
-    
     }
 }

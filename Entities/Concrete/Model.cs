@@ -37,3 +37,4 @@ public class Model : Entity<int>
 
     //public ICollection<Car>? Cars { get; set; } = null; // model ile car arasında one-to-many ilişki var.
 }
+

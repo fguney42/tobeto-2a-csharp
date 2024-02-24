@@ -1,5 +1,4 @@
 ﻿using Business.Abstract;
-using Business.Requests;
 using Business.Requests.Customer;
 using Business.Responses.Customer;
 using Microsoft.AspNetCore.Mvc;

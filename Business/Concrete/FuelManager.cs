@@ -36,7 +36,8 @@ namespace Business.Concrete
         public GetFuelListResponse GetList(GetFuelListRequest request)
         {
             IList<Fuel> fuelList = _fuelDal.GetList();
-            GetFuelListResponse response = _mapper.Map<GetFuelListResponse>(fuelList); 
+
+            GetFuelListResponse response = _mapper.Map<GetFuelListResponse>(fuelList); // Mapping
             return response;
         }
     }

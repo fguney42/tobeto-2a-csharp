@@ -1,13 +1,5 @@
-﻿using Business.Requests;
-using Business.Requests.Brand;
-using Business.Requests.Customer;
-using Business.Responses.Brand;
+﻿using Business.Requests.Customer;
 using Business.Responses.Customer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Abstract
 {

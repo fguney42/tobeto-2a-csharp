@@ -22,7 +22,7 @@ namespace Business.BusinessRules
 
         public void CheckIfUserExists(int userId)
         {
-            User user = _userDal.Get(u => u.Id == userId);
+            User? user = _userDal.Get(u => u.Id == userId);
             if (user == null)
                 throw new NotFoundException("User not found.");
         }

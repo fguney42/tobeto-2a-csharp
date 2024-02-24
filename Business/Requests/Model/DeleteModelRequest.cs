@@ -1,6 +1,7 @@
-﻿namespace Business.Requests.Model;
-
-public class DeleteModelRequest
+﻿namespace Business.Requests.Model
 {
-    public int Id { get; set; }
+    public class DeleteModelRequest
+    {
+        public int Id { get; set; }
+    }
 }

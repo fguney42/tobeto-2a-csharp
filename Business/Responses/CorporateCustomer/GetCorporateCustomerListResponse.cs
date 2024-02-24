@@ -1,9 +1,5 @@
-﻿using Business.Dtos.CorporateCustomer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// GetCorporateCustomerListResponse.cs
+using Business.Dtos.CorporateCustomer;
 
 namespace Business.Responses.CorporateCustomer
 {

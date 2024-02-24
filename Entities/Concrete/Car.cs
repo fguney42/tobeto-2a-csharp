@@ -1,9 +1,4 @@
 ﻿using Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
@@ -21,7 +16,7 @@ namespace Entities.Concrete
         {
         }
 
-        public Car(string name, int colorId, int modelId, string carState, int kilometer, short modelYear, string plate)
+        public Car(string name ,int colorId, int modelId, string carState, int kilometer, short modelYear, string plate)
         {
             Name = name;
             ColorId = colorId;

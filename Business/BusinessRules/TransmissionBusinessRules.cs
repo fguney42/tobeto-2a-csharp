@@ -13,9 +13,11 @@ namespace Business.BusinessRules
 
         public void CheckIfTransmissionNameNotExists(string transmissionName)
         {
-            bool isBrandExists = _transmissionDal.GetList().Any(p => p.Name == transmissionName);
-            if (isBrandExists)
+            bool isExists = _transmissionDal.GetList().Any(b => b.Name == transmissionName);
+            if (isExists)
+            {
                 throw new BusinessException("Brand already exists.");
+            }
         }
     }
 }

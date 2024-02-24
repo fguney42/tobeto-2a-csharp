@@ -1,7 +1,7 @@
-﻿using AutoMapper;
+﻿// IndividualCustomerMapperProfile
+using AutoMapper;
 using Business.Dtos.IndividualCustomer;
-using Business.Requests;
-using Business.Requests.Customer;
+using Business.Requests.IndividualCustomer;
 using Business.Responses.IndividualCustomer;
 using Entities.Concrete;
 
@@ -13,15 +13,17 @@ namespace Business.Profiles.Mapping.AutoMapper
         {
             CreateMap<AddIndividualCustomerRequest, IndividualCustomer>();
             CreateMap<IndividualCustomer, AddIndividualCustomerResponse>();
+
             CreateMap<IndividualCustomer, IndividualCustomerListItemDto>();
             CreateMap<IList<IndividualCustomer>, GetIndividualCustomerListResponse>()
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src));
+
             CreateMap<IndividualCustomer, DeleteIndividualCustomerResponse>();
+
             CreateMap<IndividualCustomer, GetIndividualCustomerByIdResponse>();
+
             CreateMap<UpdateIndividualCustomerRequest, IndividualCustomer>();
-
             CreateMap<IndividualCustomer, UpdateIndividualCustomerResponse>();
-
         }
     }
 }

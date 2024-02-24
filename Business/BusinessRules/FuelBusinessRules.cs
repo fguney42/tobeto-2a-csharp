@@ -7,17 +7,18 @@ namespace Business.BusinessRules
     {
         private readonly IFuelDal _fuelDal;
 
-        public FuelBusinessRules(IFuelDal fuelDal) 
+        public FuelBusinessRules(IFuelDal fuelDal)
         {
             _fuelDal = fuelDal;
         }
 
         public void CheckIfFuelNameNotExists(string fuelName)
         {
-            bool isFuelExists = _fuelDal.GetList().Any(b => b.Name == fuelName);
-
-            if (isFuelExists)
+            bool isExists = _fuelDal.GetList().Any(b => b.Name == fuelName);
+            if (isExists)
+            {
                 throw new BusinessException("Fuel already exists.");
+            }
         }
     }
 }

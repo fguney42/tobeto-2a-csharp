@@ -1,26 +1,12 @@
-﻿using Business.Dtos.Brand;
-using Business.Dtos.Customer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Business.Responses.Customer
+﻿namespace Business.Responses.Customer
 {
     public class AddCustomerResponse
     {
-        public ICollection<CustomerListItemDto> Items { get; set; }
-
         public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
 
-        public AddCustomerResponse(int id, string name, DateTime createdAt)
-        {
-            Id = id;
-            Name = name;
-            CreatedAt = createdAt;
-        }
+        // You can include any additional properties that you want to return in the response
     }
 }

@@ -1,6 +1,6 @@
-﻿using Business.Abstract;
+﻿// CorporateCustomersController.cs
+using Business.Abstract;
 using Business.Requests.CorporateCustomer;
-using Business.Requests;
 using Business.Responses.CorporateCustomer;
 using Microsoft.AspNetCore.Mvc;
 

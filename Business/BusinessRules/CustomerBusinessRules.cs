@@ -1,27 +1,23 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions;
 using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
-using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.BusinessRules
 {
     public class CustomerBusinessRules
     {
-        ICustomerDal _customerDal;
+        private readonly ICustomerDal _customerDal;
 
         public CustomerBusinessRules(ICustomerDal customerDal)
         {
             _customerDal = customerDal;
         }
-        public void CheckIfCustomerExists(Customer customer)
+
+        public void CheckIfCustomerExists(int customerId)
         {
-            if (customer is null)
+            Customer? customer = _customerDal.Get(c => c.Id == customerId);
+            if (customer == null)
                 throw new NotFoundException("Customer not found.");
         }
+
     }
 }

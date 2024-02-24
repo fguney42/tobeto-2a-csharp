@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using Business;
+using Business.Abstract;
 using Business.Requests.Fuel;
 using Business.Responses.Fuel;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public GetFuelListResponse GetList([FromQuery] GetFuelListRequest request) 
+        public GetFuelListResponse GetList([FromQuery] GetFuelListRequest request) // Referans tipleri varsayılan olarak request body'den alır.
         {
             GetFuelListResponse response = _fuelService.GetList(request);
             return response; // JSON

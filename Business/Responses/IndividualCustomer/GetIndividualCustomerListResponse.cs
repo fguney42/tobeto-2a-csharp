@@ -1,9 +1,5 @@
-﻿using Business.Dtos.IndividualCustomer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// GetIndividualCustomerListResponse
+using Business.Dtos.IndividualCustomer;
 
 namespace Business.Responses.IndividualCustomer
 {

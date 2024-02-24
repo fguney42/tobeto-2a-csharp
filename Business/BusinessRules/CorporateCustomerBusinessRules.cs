@@ -1,6 +1,5 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions;
 using DataAccess.Abstract;
-using Entities.Concrete;
 
 namespace Business.BusinessRules
 {
@@ -15,8 +14,7 @@ namespace Business.BusinessRules
 
         public void CheckIfCorporateCustomerExists(int corporateCustomerId)
         {
-            CorporateCustomer corporateCustomer = _corporateCustomerDal.Get(p => p.Id == corporateCustomerId);
-
+            CorporateCustomer? corporateCustomer = _corporateCustomerDal.Get(cc => cc.Id == corporateCustomerId);
             if (corporateCustomer == null)
                 throw new NotFoundException("CorporateCustomer not found.");
         }

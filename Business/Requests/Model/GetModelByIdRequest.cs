@@ -1,6 +1,7 @@
-﻿namespace Business.Requests.Model;
-
-public class GetModelByIdRequest
+﻿namespace Business.Requests.Model
 {
-    public int Id { get; set; }
+    public class GetModelByIdRequest
+    {
+        public int Id { get; set; }
+    }
 }
