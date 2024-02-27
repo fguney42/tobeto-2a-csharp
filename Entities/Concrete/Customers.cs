@@ -17,7 +17,7 @@ namespace Entities.Concrete
         {
             UserId = userId;
             CustomerInfo = customerInfo;
-
+         
         }
     }
 }

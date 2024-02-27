@@ -1,6 +1,7 @@
-﻿// IndividualCustomerBusinessRules
+﻿
 using Core.CrossCuttingConcerns.Exceptions;
 using DataAccess.Abstract;
+using Entities.Concrete;
 
 namespace Business.BusinessRules
 {
@@ -13,11 +14,26 @@ namespace Business.BusinessRules
             _individualCustomerDal = individualCustomerDal;
         }
 
-        public void CheckIfIndividualCustomerExists(int individualCustomerId)
+        public void CheckIfIndividualCustomerInfoValid(string customerInfo)
         {
-            IndividualCustomer? individualCustomer = _individualCustomerDal.Get(ic => ic.Id == individualCustomerId);
-            if (individualCustomer == null)
-                throw new NotFoundException("IndividualCustomer not found.");
+            if (string.IsNullOrWhiteSpace(customerInfo))
+            {
+                throw new BusinessException("Individual customer info cannot be empty.");
+            }
+        }
+
+        public IndividualCustomer FindIndividualCustomerId(int id)
+        {
+            IndividualCustomer individualCustomer = _individualCustomerDal.GetList().SingleOrDefault(c => c.Id == id);
+            return individualCustomer;
+        }
+
+        public void CheckIfIndividualCustomerExists(IndividualCustomer? individualCustomer)
+        {
+            if (individualCustomer is null)
+            {
+                throw new NotFoundException("Individual customer not found.");
+            }
         }
     }
 }

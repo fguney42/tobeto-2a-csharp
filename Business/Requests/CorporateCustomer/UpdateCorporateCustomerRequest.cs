@@ -2,9 +2,25 @@
 {
     public class UpdateCorporateCustomerRequest
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public string CompanyName { get; set; }
-        public string TaxNo { get; set; }
+        // Güncellenecek kurumsal müşterinin ID'si
+        public int CorporateCustomerId { get; set; }
+
+        // Yeni şirket adı
+        public string NewCompanyName { get; set; }
+
+        // Yeni vergi numarası
+        public string NewTaxNo { get; set; }
+
+        public UpdateCorporateCustomerRequest()
+        {
+
+        }
+
+        public UpdateCorporateCustomerRequest(int corporateCustomerId, string newCompanyName, string newTaxNo)
+        {
+            CorporateCustomerId = corporateCustomerId;
+            NewCompanyName = newCompanyName;
+            NewTaxNo = newTaxNo;
+        }
     }
 }

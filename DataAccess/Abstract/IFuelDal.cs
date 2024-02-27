@@ -5,6 +5,6 @@ namespace DataAccess.Abstract
 {
     public interface IFuelDal : IEntityRepository<Fuel, int>
     {
-        // CRUD Operations
+
     }
 }

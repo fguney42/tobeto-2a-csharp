@@ -5,7 +5,6 @@ namespace Business.Responses.Car
     public class GetCarListResponse
     {
         public ICollection<CarListItemDto> Items { get; set; }
-
         public GetCarListResponse()
         {
             Items = Array.Empty<CarListItemDto>();

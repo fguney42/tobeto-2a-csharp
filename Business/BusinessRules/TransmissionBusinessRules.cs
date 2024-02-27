@@ -1,5 +1,6 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions;
 using DataAccess.Abstract;
+using Entities.Concrete;
 
 namespace Business.BusinessRules
 {
@@ -10,14 +11,24 @@ namespace Business.BusinessRules
         {
             _transmissionDal = transmissionDal;
         }
-
-        public void CheckIfTransmissionNameNotExists(string transmissionName)
+        public void CheckIfNameTransmissionNameExists(string tName)
         {
-            bool isExists = _transmissionDal.GetList().Any(b => b.Name == transmissionName);
+            bool isExists = _transmissionDal.GetList().Any(x => x.Name == tName);
             if (isExists)
             {
-                throw new BusinessException("Brand already exists.");
+                throw new Exception("Transmission already exists.");
             }
         }
+        public Transmission FindTransmissionId(int id)
+        {
+            Transmission transmission = _transmissionDal.GetList().SingleOrDefault(b => b.Id == id);
+            return transmission;
+        }
+        public void CheckIfTransmissionExists(Transmission? transmission)
+        {
+            if (transmission is null)
+                throw new NotFoundException("Transmission not found.");
+        }
+
     }
 }

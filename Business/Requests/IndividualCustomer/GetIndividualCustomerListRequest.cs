@@ -1,5 +1,4 @@
-﻿// GetIndividualCustomerListRequest
-namespace Business.Requests.IndividualCustomer
+﻿namespace Business.Requests.Customers
 {
     public class GetIndividualCustomerListRequest
     {

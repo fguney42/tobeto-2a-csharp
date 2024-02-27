@@ -1,5 +1,4 @@
 ﻿using Business.Requests.User;
-using Core.Utilities.Security;
 using Core.Utilities.Security.JWT;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ namespace Business.Abstract
     public interface IUserService
     {
         void Register(RegisterRequest request);
-
-        AccessToken Login(LoginRequest request); //using Core.Utilities.Security.JWT; jwt
+        AccessToken Login(LoginRequest request); //TODO: return type: JWT 
     }
 }

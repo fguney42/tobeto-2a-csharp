@@ -1,18 +1,17 @@
 ﻿using Business.Dtos.Fuel;
 
-namespace Business;
-
-public class GetFuelListResponse
+namespace Business.Responses.Fuel
 {
-    public ICollection<FuelListItemDto> Items { get; set; }
-
-    public GetFuelListResponse()
+    public class GetFuelListResponse
     {
-        Items = Array.Empty<FuelListItemDto>();
-    }
-
-    public GetFuelListResponse(ICollection<FuelListItemDto> items)
-    {
-        Items = items;
+        public ICollection<FuelListItemDto> Items { get; set; }
+        public GetFuelListResponse()
+        {
+            Items = Array.Empty<FuelListItemDto>();
+        }
+        public GetFuelListResponse(ICollection<FuelListItemDto> items)
+        {
+            Items = items;
+        }
     }
 }

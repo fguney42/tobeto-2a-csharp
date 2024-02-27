@@ -1,10 +1,18 @@
-﻿// DeleteCorporateCustomerResponse.cs
-namespace Business.Responses.CorporateCustomer
+﻿namespace Business.Responses.CorporateCustomer
 {
     public class DeleteCorporateCustomerResponse
     {
-        public int Id { get; set; }
-        public string CompanyName { get; set; }
-        public string TaxNo { get; set; }
+        // silinen kurumsal müşterinin ID'si 
+        public int DeletedCorporateCustomerId { get; set; }
+
+        public DeleteCorporateCustomerResponse()
+        {
+
+        }
+
+        public DeleteCorporateCustomerResponse(int deletedCorporateCustomerId)
+        {
+            DeletedCorporateCustomerId = deletedCorporateCustomerId;
+        }
     }
 }

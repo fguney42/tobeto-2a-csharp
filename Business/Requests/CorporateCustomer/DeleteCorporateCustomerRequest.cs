@@ -2,6 +2,17 @@
 {
     public class DeleteCorporateCustomerRequest
     {
-        public int Id { get; set; }
+        // silinecek kurumsal müşterinin ID'si
+        public int CorporateCustomerId { get; set; }
+
+        public DeleteCorporateCustomerRequest()
+        {
+
+        }
+
+        public DeleteCorporateCustomerRequest(int corporateCustomerId)
+        {
+            CorporateCustomerId = corporateCustomerId;
+        }
     }
 }

@@ -1,8 +1,17 @@
-﻿// DeleteIndividualCustomerRequest
-namespace Business.Requests.IndividualCustomer
+﻿using Core.Entities;
+
+namespace Entities.Concrete
 {
-    public class DeleteIndividualCustomerRequest
+    public class DeleteIndividualCustomerRequest : Entity<int>
     {
-        public int Id { get; set; }
+        public DeleteIndividualCustomerRequest()
+        {
+
+        }
+
+        public DeleteIndividualCustomerRequest(int id)
+        {
+            Id = id;
+        }
     }
 }

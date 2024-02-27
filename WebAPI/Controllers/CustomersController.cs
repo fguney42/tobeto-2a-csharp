@@ -1,6 +1,8 @@
 ﻿using Business.Abstract;
-using Business.Requests.Customer;
-using Business.Responses.Customer;
+using Business.Requests.Customers;
+using Business.Responses.Customers;
+using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -9,56 +11,55 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private readonly ICustomerService _customerService;
+        private readonly ICustomersService _customersService;
 
-        public CustomersController(ICustomerService customerService)
+        public CustomersController(ICustomersService customersService)
         {
-            _customerService = customerService;
+            _customersService = customersService;
         }
 
-        [HttpGet] // GET http://localhost:5245/api/customers
-        public ActionResult<GetCustomerListResponse> GetList([FromQuery] GetCustomerListRequest request)
+        [HttpGet]
+        public GetCustomersListResponse GetList([FromQuery] GetCustomersListRequest request)
         {
-            GetCustomerListResponse response = _customerService.GetList(request);
-            return Ok(response);
+            GetCustomersListResponse response = _customersService.GetList(request);
+            return response;
         }
 
-        [HttpGet("{Id}")] // GET http://localhost:5245/api/customers/1
-        public ActionResult<GetCustomerByIdResponse> GetById([FromRoute] GetCustomerByIdRequest request)
+        [HttpPost]
+        public ActionResult<AddCustomersResponse> Add(AddCustomersRequest request)
         {
-            GetCustomerByIdResponse response = _customerService.GetById(request);
-            return Ok(response);
+            try
+            {
+                AddCustomersResponse response = _customersService.Add(request);
+                return CreatedAtAction(nameof(GetList), response);
+            }
+            catch (Core.CrossCuttingConcerns.Exceptions.BusinessException exception)
+            {
+                return BadRequest(new Core.CrossCuttingConcerns.Exceptions.BusinessProblemDetails()
+                {
+                    Title = "Business Exceptions",
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = exception.Message,
+                    Instance = HttpContext.Request.Path
+                });
+            }
         }
 
-        [HttpPost] // POST http://localhost:5245/api/customers
-        public ActionResult<AddCustomerResponse> Add([FromBody] AddCustomerRequest request)
-        {
-            AddCustomerResponse response = _customerService.Add(request);
-            return CreatedAtAction( // 201 Created
-                actionName: nameof(GetById),
-                routeValues: new { Id = response.Id },
-                value: response
-            );
-        }
-
-        [HttpPut("{Id}")] // PUT http://localhost:5245/api/customers/1
-        public ActionResult<UpdateCustomerResponse> Update(
-            [FromRoute] int Id,
-            [FromBody] UpdateCustomerRequest request
-        )
+        [HttpPut("{id}")]
+        public ActionResult<UpdateCustomersResponse> Update([FromRoute] int Id, [FromBody] UpdateCustomersRequest request)
         {
             if (Id != request.Id)
                 return BadRequest();
 
-            UpdateCustomerResponse response = _customerService.Update(request);
+            UpdateCustomersResponse response = _customersService.Update(request);
             return Ok(response);
         }
 
-        [HttpDelete("{Id}")] // DELETE http://localhost:5245/api/customers/1
-        public ActionResult<DeleteCustomerResponse> Delete([FromRoute] DeleteCustomerRequest request)
+        [HttpDelete("{id}")]
+        public DeleteCustomersResponse Delete([FromRoute] int id)
         {
-            DeleteCustomerResponse response = _customerService.Delete(request);
-            return Ok(response);
+            DeleteCustomersResponse delete = _customersService.Delete(new DeleteCustomersRequest(id));
+            return delete;
         }
     }
 }

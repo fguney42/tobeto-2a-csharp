@@ -1,5 +1,6 @@
-﻿namespace Business;
-
-public class GetFuelListRequest
+﻿namespace Business.Requests.Fuel
 {
+    public class GetFuelListRequest//listele işlemi modeldeki gibi
+    {
+    }
 }

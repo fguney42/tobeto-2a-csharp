@@ -1,1 +1,0 @@
-﻿Data Access katmanı veri yönetim ile ilgili, veri yazma ve okuma işlemleri, gerçekleştirdiğimiz katman olacak.

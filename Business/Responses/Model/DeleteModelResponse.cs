@@ -1,9 +1,8 @@
-﻿namespace Business.Responses.Model
+﻿namespace Business.Responses.Model;
+
+public class DeleteModelResponse
 {
-    public class DeleteModelResponse
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime DeletedAt { get; set; }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public DateTime DeletedAt { get; set; }
 }

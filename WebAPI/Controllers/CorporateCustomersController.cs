@@ -1,7 +1,10 @@
-﻿// CorporateCustomersController.cs
-using Business.Abstract;
+﻿using Business.Abstract;
 using Business.Requests.CorporateCustomer;
+using Business.Requests.Customers;
 using Business.Responses.CorporateCustomer;
+using Business.Responses.Customers;
+using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -17,49 +20,48 @@ namespace WebAPI.Controllers
             _corporateCustomerService = corporateCustomerService;
         }
 
-        [HttpGet] // GET http://localhost:5245/api/corporatecustomers
-        public ActionResult<GetCorporateCustomerListResponse> GetList([FromQuery] GetCorporateCustomerListRequest request)
+        [HttpGet]
+        public GetCorporateCustomerListResponse GetList([FromQuery] GetCorporateCustomerListRequest request)
         {
             GetCorporateCustomerListResponse response = _corporateCustomerService.GetList(request);
-            return Ok(response);
+            return response;
         }
 
-        [HttpGet("{Id}")] // GET http://localhost:5245/api/corporatecustomers/1
-        public ActionResult<GetCorporateCustomerByIdResponse> GetById([FromRoute] GetCorporateCustomerByIdRequest request)
+        [HttpPost]
+        public ActionResult<AddCorporateCustomerResponse> Add(AddCorporateCustomerRequest request)
         {
-            GetCorporateCustomerByIdResponse response = _corporateCustomerService.GetById(request);
-            return Ok(response);
+            try
+            {
+                AddCorporateCustomerResponse response = _corporateCustomerService.Add(request);
+                return CreatedAtAction(nameof(GetList), response);
+            }
+            catch (Core.CrossCuttingConcerns.Exceptions.BusinessException exception)
+            {
+                return BadRequest(new Core.CrossCuttingConcerns.Exceptions.BusinessProblemDetails()
+                {
+                    Title = "Business Exceptions",
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = exception.Message,
+                    Instance = HttpContext.Request.Path
+                });
+            }
         }
 
-        [HttpPost] // POST http://localhost:5245/api/corporatecustomers
-        public ActionResult<AddCorporateCustomerResponse> Add([FromBody] AddCorporateCustomerRequest request)
+        [HttpPut("{id}")]
+        public ActionResult<UpdateCorporateCustomerResponse> Update([FromRoute] int Id, [FromBody] UpdateCorporateCustomerRequest request)
         {
-            AddCorporateCustomerResponse response = _corporateCustomerService.Add(request);
-            return CreatedAtAction( // 201 Created
-                actionName: nameof(GetById),
-                routeValues: new { Id = response.Id },
-                value: response
-            );
-        }
-
-        [HttpPut("{Id}")] // PUT http://localhost:5245/api/corporatecustomers/1
-        public ActionResult<UpdateCorporateCustomerResponse> Update(
-            [FromRoute] int Id,
-            [FromBody] UpdateCorporateCustomerRequest request
-        )
-        {
-            if (Id != request.Id)
+            if (Id != request.CorporateCustomerId)
                 return BadRequest();
 
             UpdateCorporateCustomerResponse response = _corporateCustomerService.Update(request);
             return Ok(response);
         }
 
-        [HttpDelete("{Id}")] // DELETE http://localhost:5245/api/corporatecustomers/1
-        public ActionResult<DeleteCorporateCustomerResponse> Delete([FromRoute] DeleteCorporateCustomerRequest request)
+        [HttpDelete("{id}")]
+        public DeleteCorporateCustomerResponse Delete([FromRoute] int id)
         {
-            DeleteCorporateCustomerResponse response = _corporateCustomerService.Delete(request);
-            return Ok(response);
+            DeleteCorporateCustomerResponse delete = _corporateCustomerService.Delete(new DeleteCorporateCustomerRequest(id));
+            return delete;
         }
     }
 }

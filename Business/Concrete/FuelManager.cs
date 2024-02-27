@@ -10,10 +10,9 @@ namespace Business.Concrete
 {
     public class FuelManager : IFuelService
     {
-
         private readonly IFuelDal _fuelDal;
         private readonly FuelBusinessRules _fuelBusinessRules;
-        private readonly IMapper _mapper;
+        private IMapper _mapper;
         public FuelManager(IFuelDal fuelDal, FuelBusinessRules fuelBusinessRules, IMapper mapper)
         {
             _fuelDal = fuelDal;
@@ -23,7 +22,8 @@ namespace Business.Concrete
 
         public AddFuelResponse Add(AddFuelRequest request)
         {
-            _fuelBusinessRules.CheckIfFuelNameNotExists(request.Name);
+            _fuelBusinessRules.CheckIfFuelNameExists(request.Name);
+
 
             Fuel fuelToAdd = _mapper.Map<Fuel>(request);
 
@@ -33,12 +33,36 @@ namespace Business.Concrete
             return response;
         }
 
+        public DeleteFuelResponse Delete(DeleteFuelRequest request)
+        {
+            Fuel? fuelTodelete = _fuelDal.Get(predicate: fuel => fuel.Id == request.Id);
+            _fuelBusinessRules.CheckIfFuelExists(fuelTodelete);
+            Fuel deletedFuel = _fuelDal.Delete(fuelTodelete!);
+            DeleteFuelResponse response = _mapper.Map<DeleteFuelResponse>(deletedFuel);
+            return response;
+        }
+
+
         public GetFuelListResponse GetList(GetFuelListRequest request)
         {
             IList<Fuel> fuelList = _fuelDal.GetList();
-
-            GetFuelListResponse response = _mapper.Map<GetFuelListResponse>(fuelList); // Mapping
+            GetFuelListResponse response = _mapper.Map<GetFuelListResponse>(fuelList);
             return response;
+
+        }
+
+        public UpdateFuelResponse Update(UpdateFuelRequest request)
+        {
+            Fuel? fuelToUpdate = _fuelDal.Get(predicate: fuel => fuel.Id == request.Id);
+            _fuelBusinessRules.CheckIfFuelExists(fuelToUpdate);
+
+            fuelToUpdate = _mapper.Map(request, fuelToUpdate);
+            Fuel updatedFuel = _fuelDal.Update(fuelToUpdate);
+            var response = _mapper.Map<UpdateFuelResponse>(updatedFuel);
+            return response;
+
+
+
         }
     }
 }

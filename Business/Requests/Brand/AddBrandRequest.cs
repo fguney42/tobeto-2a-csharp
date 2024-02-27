@@ -1,11 +1,14 @@
-﻿namespace Business.Requests.Brand;
+﻿using Core.Entities;
+
+namespace Business.Requests.Brand;
 
 public class AddBrandRequest
-{ // Dto
+{ 
     public string Name { get; set; }
-
-    public AddBrandRequest(string name)
+    public string LogoUrl { get; set; }
+    public AddBrandRequest(string name, string logoUrl)
     {
         Name = name;
+        LogoUrl = logoUrl;
     }
 }

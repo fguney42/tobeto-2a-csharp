@@ -1,26 +1,31 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions;
 using DataAccess.Abstract;
-using System.Globalization;
+using Entities.Concrete;
 
 namespace Business.BusinessRules
 {
+
+
     public class CarBusinessRules
     {
-        private readonly ICarDal _carDal; // Şu anda herhangi bir business rule içinde kullanılmıyor
+        private readonly ICarDal _carDal;
 
         public CarBusinessRules(ICarDal carDal)
         {
             _carDal = carDal;
         }
-        public void CheckIfModelYearYoungerThanTwenty(short modelYear)
+        // id değerine sahip aracı bul döndür
+        public Car FindBrandId(int id)
         {
-            DateTime now = DateTime.Now;
-            bool isCarYoung = now.Year - modelYear <= 20;
-
-            if(!isCarYoung)
-            {
-                throw new BusinessException("The car is not younger than 20 years.");
-            }
+            Car car = _carDal.GetList().SingleOrDefault(x => x.Id == id);
+            return car;
         }
+        public void CheckIfCarExists(Car? car)
+        {
+            if (car is null)
+                throw new NotFoundException("Car not found.");
+        }
+
+
     }
 }

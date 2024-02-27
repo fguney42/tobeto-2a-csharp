@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
-using Core.Entities;
-namespace Core.Utilities.Security.JWT;
+using System.Threading.Tasks;
 
-public interface ITokenHelper
+namespace Core.Utilities.Security.JWT
 {
-    AccessToken CreateToken(User user);
+    public interface ITokenHelper
+    {
+        AccessToken CreateToken(User user, List<Claim> claims);
+    }
 }

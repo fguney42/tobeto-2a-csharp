@@ -1,6 +1,6 @@
 ﻿namespace Core.DataAccess;
 
-public interface IEntityRepository<TEntity, TEntityId>
+public interface IEntityRepository<TEntity, TEntityId> // Repository Design Pattern
 {
     public IList<TEntity> GetList(Func<TEntity, bool>? predicate = null);
     // Func fonksiyonları tutabileceğimiz bir type'dır.
@@ -24,4 +24,3 @@ public interface IEntityRepository<TEntity, TEntityId>
     public TEntity Update(TEntity entity);
     public TEntity Delete(TEntity entity, bool isSoftDelete = true);
 }
-

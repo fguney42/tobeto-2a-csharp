@@ -1,6 +1,9 @@
 ﻿using Business.Abstract;
-using Business.Requests.IndividualCustomer;
-using Business.Responses.IndividualCustomer;
+using Business.Requests.Customers;
+using Business.Responses.Customer;
+using Business.Responses.Customers;
+using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -16,49 +19,48 @@ namespace WebAPI.Controllers
             _individualCustomerService = individualCustomerService;
         }
 
-        [HttpGet] // GET http://localhost:5245/api/individualcustomers
-        public ActionResult<GetIndividualCustomerListResponse> GetList([FromQuery] GetIndividualCustomerListRequest request)
+        [HttpGet]
+        public GetIndividualCustomerListResponse GetList([FromQuery] GetIndividualCustomerListRequest request)
         {
             GetIndividualCustomerListResponse response = _individualCustomerService.GetList(request);
-            return Ok(response);
+            return response;
         }
 
-        [HttpGet("{Id}")] // GET http://localhost:5245/api/individualcustomers/1
-        public ActionResult<GetIndividualCustomerByIdResponse> GetById([FromRoute] GetIndividualCustomerByIdRequest request)
+        [HttpPost]
+        public ActionResult<AddIndividualCustomerResponse> Add(AddIndividualCustomerRequest request)
         {
-            GetIndividualCustomerByIdResponse response = _individualCustomerService.GetById(request);
-            return Ok(response);
+            try
+            {
+                AddIndividualCustomerResponse response = _individualCustomerService.Add(request);
+                return CreatedAtAction(nameof(GetList), response);
+            }
+            catch (Core.CrossCuttingConcerns.Exceptions.BusinessException exception)
+            {
+                return BadRequest(new Core.CrossCuttingConcerns.Exceptions.BusinessProblemDetails()
+                {
+                    Title = "Business Exceptions",
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = exception.Message,
+                    Instance = HttpContext.Request.Path
+                });
+            }
         }
 
-        [HttpPost] // POST http://localhost:5245/api/individualcustomers
-        public ActionResult<AddIndividualCustomerResponse> Add([FromBody] AddIndividualCustomerRequest request)
+        [HttpPut("{id}")]
+        public ActionResult<UpdateIndividualCustomerResponse> Update([FromRoute] int id, [FromBody] UpdateIndividualCustomerRequest request)
         {
-            AddIndividualCustomerResponse response = _individualCustomerService.Add(request);
-            return CreatedAtAction( // 201 Created
-                actionName: nameof(GetById),
-                routeValues: new { Id = response.Id },
-                value: response
-            );
-        }
-
-        [HttpPut("{Id}")] // PUT http://localhost:5245/api/individualcustomers/1
-        public ActionResult<UpdateIndividualCustomerResponse> Update(
-            [FromRoute] int Id,
-            [FromBody] UpdateIndividualCustomerRequest request
-        )
-        {
-            if (Id != request.Id)
+            if (id != request.Id)
                 return BadRequest();
 
             UpdateIndividualCustomerResponse response = _individualCustomerService.Update(request);
             return Ok(response);
         }
 
-        [HttpDelete("{Id}")] // DELETE http://localhost:5245/api/individualcustomers/1
-        public ActionResult<DeleteIndividualCustomerResponse> Delete([FromRoute] DeleteIndividualCustomerRequest request)
+        [HttpDelete("{id}")]
+        public DeleteIndividualCustomerResponse Delete([FromRoute] int id)
         {
-            DeleteIndividualCustomerResponse response = _individualCustomerService.Delete(request);
-            return Ok(response);
+            DeleteIndividualCustomerResponse delete = _individualCustomerService.Delete(new DeleteIndividualCustomerRequest(id));
+            return delete;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Business;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Business.Requests.Fuel;
 using Business.Responses.Fuel;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,6 @@ namespace WebAPI.Controllers
     [ApiController]
     public class FuelsController : ControllerBase
     {
-
         private readonly IFuelService _fuelService;
         public FuelsController(IFuelService fuelService)
         {
@@ -18,33 +16,52 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public GetFuelListResponse GetList([FromQuery] GetFuelListRequest request) // Referans tipleri varsayılan olarak request body'den alır.
+        public GetFuelListResponse GetList([FromQuery] GetFuelListRequest request)
         {
             GetFuelListResponse response = _fuelService.GetList(request);
-            return response; // JSON
+            return response;
         }
 
-        //[HttpPost("/add")]
         [HttpPost]
+
+
         public ActionResult<AddFuelResponse> Add(AddFuelRequest request)
         {
             try
             {
                 AddFuelResponse response = _fuelService.Add(request);
-                return CreatedAtAction(nameof(GetList), response);
+                //return response;//200 OK
+                return CreatedAtAction(nameof(GetList), response); // 201 Created dönecek
             }
             catch (Core.CrossCuttingConcerns.Exceptions.BusinessException exception)
             {
-                return BadRequest(
-                    new Core.CrossCuttingConcerns.Exceptions.BusinessProblemDetails()
-                    {
-                        Title = "Business Exception",
-                        Status = StatusCodes.Status400BadRequest,
-                        Detail = exception.Message,
-                        Instance = HttpContext.Request.Path
-                    }
-                );
+                return BadRequest(new Core.CrossCuttingConcerns.Exceptions.BusinessProblemDetails()
+                {
+                    Title = "Business Exceptions",
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = exception.Message,
+                    Instance = HttpContext.Request.Path
+
+                });
             }
+
+
+        }
+        [HttpPut("{id}")]
+        public ActionResult<UpdateFuelResponse> Update([FromRoute] int Id, [FromBody] UpdateFuelRequest request)
+        {
+            if (Id != request.Id)
+                return BadRequest();
+            UpdateFuelResponse response = _fuelService.Update(request);
+            return Ok(response);
+
+        }
+        [HttpDelete("/delete")]
+        public DeleteFuelResponse Delete([FromRoute] DeleteFuelRequest request)
+        {
+            DeleteFuelResponse deleteFuelResponse = _fuelService.Delete(request);
+            return deleteFuelResponse;
+
         }
     }
 }

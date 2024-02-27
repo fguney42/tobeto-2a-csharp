@@ -1,18 +1,14 @@
-﻿using Business.Requests.IndividualCustomer;
-using Business.Responses.IndividualCustomer;
+﻿using Business.Requests.Customers;
+using Business.Responses.Customer;
+using Entities.Concrete;
 
 namespace Business.Abstract
 {
     public interface IIndividualCustomerService
     {
-        GetIndividualCustomerListResponse GetList(GetIndividualCustomerListRequest request);
-
-        GetIndividualCustomerByIdResponse GetById(GetIndividualCustomerByIdRequest request);
-
         AddIndividualCustomerResponse Add(AddIndividualCustomerRequest request);
-
         UpdateIndividualCustomerResponse Update(UpdateIndividualCustomerRequest request);
-
         DeleteIndividualCustomerResponse Delete(DeleteIndividualCustomerRequest request);
+        GetIndividualCustomerListResponse GetList(GetIndividualCustomerListRequest request);
     }
 }

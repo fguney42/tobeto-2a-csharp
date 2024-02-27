@@ -1,10 +1,26 @@
-﻿// UpdateCorporateCustomerResponse.cs
-namespace Business.Responses.CorporateCustomer
+﻿namespace Business.Responses.CorporateCustomer
 {
     public class UpdateCorporateCustomerResponse
     {
-        public int Id { get; set; }
-        public string CompanyName { get; set; }
-        public string TaxNo { get; set; }
+        // Güncellenen kurumsal müşterinin ID'si
+        public int UpdatedCorporateCustomerId { get; set; }
+
+        // Yeni şirket adı
+        public string NewCompanyName { get; set; }
+
+        // Yeni vergi numarası
+        public string NewTaxNo { get; set; }
+
+        public UpdateCorporateCustomerResponse()
+        {
+
+        }
+
+        public UpdateCorporateCustomerResponse(int updatedCorporateCustomerId, string newCompanyName, string newTaxNo)
+        {
+            UpdatedCorporateCustomerId = updatedCorporateCustomerId;
+            NewCompanyName = newCompanyName;
+            NewTaxNo = newTaxNo;
+        }
     }
 }

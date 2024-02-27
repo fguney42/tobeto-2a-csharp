@@ -1,12 +1,24 @@
-﻿// AddCorporateCustomerResponse.cs
-namespace Business.Responses.CorporateCustomer
+﻿namespace Business.Requests.CorporateCustomer
 {
     public class AddCorporateCustomerResponse
     {
-        public int Id { get; set; }
+        // Şirketin adı
         public string CompanyName { get; set; }
+
+        //Vergi numarası
         public string TaxNo { get; set; }
 
-        // You can include any additional properties that you want to return in the response
+        public AddCorporateCustomerResponse()
+        {
+
+        }
+        public AddCorporateCustomerResponse(
+        string companyName,
+        string taxNo)
+
+        {
+            CompanyName = companyName;
+            TaxNo = taxNo;
+        }
     }
 }

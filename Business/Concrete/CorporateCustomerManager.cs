@@ -1,13 +1,14 @@
-﻿// CorporateCustomerManager
-using AutoMapper;
+﻿using AutoMapper;
 using Business.Abstract;
 using Business.BusinessRules;
-using Business.Profiles.Validation.FluentValidation.Customer;
 using Business.Requests.CorporateCustomer;
+using Business.Requests.Customers;
 using Business.Responses.CorporateCustomer;
-using Core.CrossCuttingConcerns.Validation.FluentValidation;
+using Business.Responses.Customers;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using System;
+using System.Collections.Generic;
 
 namespace Business.Concrete
 {
@@ -15,8 +16,9 @@ namespace Business.Concrete
     {
         private readonly ICorporateCustomerDal _corporateCustomerDal;
         private readonly CorporateCustomerBusinessRules _corporateCustomerBusinessRules;
-        private readonly IMapper _mapper;
+        private IMapper _mapper;
 
+        // Dependency injection ile bağımlılıkları enjekte et 
         public CorporateCustomerManager(ICorporateCustomerDal corporateCustomerDal, CorporateCustomerBusinessRules corporateCustomerBusinessRules, IMapper mapper)
         {
             _corporateCustomerDal = corporateCustomerDal;
@@ -24,63 +26,53 @@ namespace Business.Concrete
             _mapper = mapper;
         }
 
+        // Yeni kurumsal müşteri eklemek için
         public AddCorporateCustomerResponse Add(AddCorporateCustomerRequest request)
         {
-            // Fluent validation
-            ValidationTool.Validate(new AddCorporateCustomerRequestValidator(), request);
+            CorporateCustomer corporateCustomerToAdd = _mapper.Map<CorporateCustomer>(request);
+            _corporateCustomerDal.Add(corporateCustomerToAdd);
 
-            // Business rules
-            // Add additional business rules as needed
-
-            // Mapping
-            var corporateCustomerToAdd = _mapper.Map<CorporateCustomer>(request);
-
-            // Data operations
-            CorporateCustomer addedCorporateCustomer = _corporateCustomerDal.Add(corporateCustomerToAdd);
-
-            // Mapping & response
-            var response = _mapper.Map<AddCorporateCustomerResponse>(addedCorporateCustomer);
+            AddCorporateCustomerResponse response = _mapper.Map<AddCorporateCustomerResponse>(corporateCustomerToAdd);
             return response;
         }
 
+        // Kurumsal müşteri listesini getirmek için
+        public GetCorporateCustomerListResponse GetList(GetCorporateCustomerListRequest request)
+        {
+            IList<CorporateCustomer> corporateCustomersList = _corporateCustomerDal.GetList();
+            GetCorporateCustomerListResponse response = _mapper.Map<GetCorporateCustomerListResponse>(corporateCustomersList);
+            return response;
+        }
+
+        // Kurumsal müşteriyi güncellemek için
+        public UpdateCorporateCustomerResponse Update(UpdateCorporateCustomerRequest request)
+        {
+            CorporateCustomer? corporateCustomerToUpdate = _corporateCustomerDal.Get(predicate: cc => cc.Id == request.CorporateCustomerId);
+            _corporateCustomerBusinessRules.CheckIfCorporateCustomerExists(corporateCustomerToUpdate);
+
+            corporateCustomerToUpdate = _mapper.Map(request, corporateCustomerToUpdate);
+            CorporateCustomer updatedCorporateCustomer = _corporateCustomerDal.Update(corporateCustomerToUpdate!);
+
+            var response = _mapper.Map<UpdateCorporateCustomerResponse>(updatedCorporateCustomer);
+            return response;
+        }
+
+        // Kurumsal müşteriyi silmek için
         public DeleteCorporateCustomerResponse Delete(DeleteCorporateCustomerRequest request)
         {
-            CorporateCustomer? corporateCustomerToDelete = _corporateCustomerDal.Get(predicate: customer => customer.Id == request.Id);
-            _corporateCustomerBusinessRules.CheckIfCorporateCustomerExists(corporateCustomerToDelete.Id);
+            CorporateCustomer? corporateCustomerToDelete = _corporateCustomerDal.Get(predicate: cc => cc.Id == request.CorporateCustomerId);
+            _corporateCustomerBusinessRules.CheckIfCorporateCustomerExists(corporateCustomerToDelete);
 
-            CorporateCustomer deletedCorporateCustomer = _corporateCustomerDal.Delete(corporateCustomerToDelete);
+            CorporateCustomer deletedCorporateCustomer = _corporateCustomerDal.Delete(corporateCustomerToDelete!);
 
             var response = _mapper.Map<DeleteCorporateCustomerResponse>(deletedCorporateCustomer);
             return response;
         }
 
-        public GetCorporateCustomerByIdResponse GetById(GetCorporateCustomerByIdRequest request)
+        public GetCorporateCustomerListResponse GetList(GetCustomersListResponse request)
         {
-            CorporateCustomer? corporateCustomer = _corporateCustomerDal.Get(predicate: customer => customer.Id == request.Id);
-            _corporateCustomerBusinessRules.CheckIfCorporateCustomerExists(corporateCustomer.Id);
-
-            var response = _mapper.Map<GetCorporateCustomerByIdResponse>(corporateCustomer);
-            return response;
+            throw new NotImplementedException();
         }
 
-        public GetCorporateCustomerListResponse GetList(GetCorporateCustomerListRequest request)
-        {
-            IList<CorporateCustomer> corporateCustomerList = _corporateCustomerDal.GetList().ToList();
-
-            var response = _mapper.Map<GetCorporateCustomerListResponse>(corporateCustomerList);
-            return response;
-        }
-
-        public UpdateCorporateCustomerResponse Update(UpdateCorporateCustomerRequest request)
-        {
-            CorporateCustomer? corporateCustomerToUpdate = _corporateCustomerDal.Get(predicate: customer => customer.Id == request.Id);
-            _corporateCustomerBusinessRules.CheckIfCorporateCustomerExists(corporateCustomerToUpdate.Id);
-
-            corporateCustomerToUpdate = _mapper.Map(request, corporateCustomerToUpdate);
-            CorporateCustomer updatedCorporateCustomer = _corporateCustomerDal.Update(corporateCustomerToUpdate);
-
-            var response = _mapper.Map<UpdateCorporateCustomerResponse>(updatedCorporateCustomer);
-            return response;
-        }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace Core.Utilities.Security.JWT
             _tokenOptions = _configuration.GetSection("TokenOptions").Get<TokenOptions>();
         }
 
-        public AccessToken CreateToken(User user)
+        public AccessToken CreateToken(User user, List<Claim> claims)
         {
             // TODO: Refactor
             DateTime expirationTime = DateTime.Now.AddMinutes(_tokenOptions.ExpirationTime);
@@ -34,6 +35,7 @@ namespace Core.Utilities.Security.JWT
                  audience: _tokenOptions.Audience,
                  expires: expirationTime,
                  signingCredentials: signingCredentials,
+                 claims: claims,
                  notBefore: DateTime.Now
                 );
 

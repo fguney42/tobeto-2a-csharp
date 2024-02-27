@@ -3,8 +3,8 @@
 namespace Entities.Concrete;
 
 public class Model : Entity<int>
-{
-    public int BrandId { get; set; } // normalizasyon
+{ 
+    public int BrandId { get; set; } 
     public int FuelId { get; set; }
     public int TransmissionId { get; set; }
     public string Name { get; set; }
@@ -35,6 +35,6 @@ public class Model : Entity<int>
     public Fuel? Fuel { get; set; } = null; // one-to-one ilişki var.
     public Transmission? Transmission { get; set; } = null; // one-to-one ilişki var.
 
-    //public ICollection<Car>? Cars { get; set; } = null; // model ile car arasında one-to-many ilişki var.
-}
+    public ICollection<Car>? Cars { get; set; } = null; // model ile car arasında one-to-many ilişki var. //ekstra 
 
+}

@@ -5,59 +5,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- namespace Core.DataAccess.EntityFramework;
 
-// T => Type
-public class EfEntityRepositoryBase<TEntity, TEntityId, TContext> : IEntityRepository<TEntity, TEntityId>
-    where TEntity : Entity<TEntityId>
-    where TContext : DbContext
+
+namespace Core.DataAccess.EntityFramework
 {
-    private readonly TContext Context;
-
-    public EfEntityRepositoryBase(TContext context)
+    // T => Type
+    public class EfEntityRepositoryBase<TEntity, TEntityId, TContext> : IEntityRepository<TEntity, TEntityId>
+        where TEntity : Entity<TEntityId>, new() where TContext : DbContext
     {
-        this.Context = context;
-    }
+        private readonly TContext Context;
 
-    public TEntity Add(TEntity entity)
-    {
-        entity.CreatedAt = DateTime.UtcNow;
-        Context.Add(entity);
-        Context.SaveChanges();
-        return entity;
-    }
+        public EfEntityRepositoryBase(TContext context)
+        {
+            this.Context = context;
+        }
 
-    public TEntity Delete(TEntity entity, bool isSoftDelete = true)
-    {
-        entity.DeletedAt = DateTime.UtcNow;
-        // Context.Entry(entity).State = EntityState.Modified;
+        public TEntity Add(TEntity entity)
+        {
+            Context.Add(entity);
+            Context.SaveChanges();
+            return entity;
+        }
 
-        if (!isSoftDelete)
-            Context.Remove(entity);
+        public TEntity Delete(TEntity entity, bool isSoftDelete = true)
+        {
+            entity.DeletedAt = DateTime.UtcNow;
+            // Context.Entry(entity).State = EntityState.Modified;
 
-        Context.SaveChanges();
-        return entity;
-    }
+            if (!isSoftDelete)
+                Context.Remove(entity);
 
-    public TEntity? Get(Func<TEntity, bool> predicate)
-    {
-        return Context.Set<TEntity>().FirstOrDefault(predicate);
-    }
+            Context.SaveChanges();
+            return entity;
+        }
 
-    public IList<TEntity> GetList(Func<TEntity, bool>? predicate = null)
-    {
-        IQueryable<TEntity> entities = Context.Set<TEntity>();
-        if (predicate is not null)
-            entities = entities.Where(predicate).AsQueryable();
+        public TEntity? Get(Func<TEntity, bool> predicate)
+        {
+            return Context.Set<TEntity>().FirstOrDefault(predicate);
+        }
 
-        return entities.ToList();
-    }
+        public IList<TEntity> GetList(Func<TEntity, bool>? predicate = null)
+        {
+            IQueryable<TEntity> entities = Context.Set<TEntity>();
+            if (predicate is not null)
+                entities = entities.Where(predicate).AsQueryable();
 
-    public TEntity Update(TEntity entity)
-    {
-        entity.UpdateAt = DateTime.UtcNow;
-        Context.Update(entity);
-        Context.SaveChanges();
-        return entity;
+            return entities.ToList();
+        }
+
+        public TEntity Update(TEntity entity)
+        {
+            Context.Update(entity);
+            Context.SaveChanges();
+            return entity;
+        }
     }
 }

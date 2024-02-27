@@ -1,12 +1,24 @@
-﻿// UpdateIndividualCustomerRequest
-namespace Business.Requests.IndividualCustomer
+﻿using Core.Entities;
+
+namespace Entities.Concrete
 {
-    public class UpdateIndividualCustomerRequest
+    public class UpdateIndividualCustomerRequest : Entity<int>
     {
-        public int Id { get; set; }
-        public int UserId { get; set; } // Assuming UserId is required for updating an individual customer
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string NationalIdentity { get; set; }
+
+        public UpdateIndividualCustomerRequest()
+        {
+
+        }
+
+        public UpdateIndividualCustomerRequest(int id, string firstName, string lastName, string nationalIdentity)
+        {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+            NationalIdentity = nationalIdentity;
+        }
     }
 }

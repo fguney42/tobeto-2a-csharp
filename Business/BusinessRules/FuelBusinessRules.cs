@@ -1,5 +1,6 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions;
 using DataAccess.Abstract;
+using Entities.Concrete;
 
 namespace Business.BusinessRules
 {
@@ -11,14 +12,28 @@ namespace Business.BusinessRules
         {
             _fuelDal = fuelDal;
         }
-
-        public void CheckIfFuelNameNotExists(string fuelName)
+        public void CheckIfFuelNameExists(string fuelName)
         {
-            bool isExists = _fuelDal.GetList().Any(b => b.Name == fuelName);
+            bool isExists = _fuelDal.GetList().Any(f => f.Name == fuelName);
             if (isExists)
             {
-                throw new BusinessException("Fuel already exists.");
+                throw new Exception("Fuel already exists.");
             }
+
+        }
+        public Fuel FindFuelId(int id)
+        {
+            Fuel fuel = _fuelDal.GetList().SingleOrDefault(b => b.Id == id);
+            return fuel;
+        }
+        public void CheckIfFuelExists(Fuel? fuel)
+        {
+            if (fuel is null)
+                throw new NotFoundException("Fuel not found.");
         }
     }
+
+
+
+
 }

@@ -10,21 +10,21 @@ namespace WebAPI.Controllers
     public class CarsController : ControllerBase
     {
         private readonly ICarService _carService;
+
         public CarsController(ICarService carService)
         {
             _carService = carService;
         }
-
         [HttpGet]
-        public GetCarListResponse GetList([FromQuery] GetCarListRequest request) // Referans tipleri varsayılan olarak request body'den alır.
+        public GetCarListResponse GetList([FromQuery] GetCarListRequest request)
         {
             GetCarListResponse response = _carService.GetList(request);
-            return response; // JSON
+            return response;
         }
-
         [HttpPost]
         public ActionResult<AddCarResponse> Add(AddCarRequest request)
         {
+
             try
             {
                 AddCarResponse response = _carService.Add(request);
@@ -32,16 +32,31 @@ namespace WebAPI.Controllers
             }
             catch (Core.CrossCuttingConcerns.Exceptions.BusinessException exception)
             {
-                return BadRequest(
-                    new Core.CrossCuttingConcerns.Exceptions.BusinessProblemDetails()
-                    {
-                        Title = "Business Exception",
-                        Status = StatusCodes.Status400BadRequest,
-                        Detail = exception.Message,
-                        Instance = HttpContext.Request.Path
-                    }
-                );
+                return BadRequest(new Core.CrossCuttingConcerns.Exceptions.BusinessProblemDetails()
+                {
+                    Title = "Business Exceptions",
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = exception.Message,
+                    Instance = HttpContext.Request.Path
+
+                });
             }
+
+
+        }
+        [HttpPut("{id}")]
+        public ActionResult<UpdateCarResponse> UpdateCar([FromRoute] int Id, [FromBody] UpdateCarRequest request)
+        {
+            if (Id != request.Id)
+                return BadRequest();
+            UpdateCarResponse response = _carService.Update(request);
+            return Ok(response);
+        }
+        [HttpDelete("{id}")]
+        public DeleteCarResponse Delete([FromRoute] DeleteCarRequest request)
+        {
+            DeleteCarResponse response = _carService.Delete(request);
+            return response;
         }
     }
 }

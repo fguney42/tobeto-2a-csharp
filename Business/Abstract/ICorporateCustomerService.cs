@@ -1,19 +1,15 @@
-﻿// ICorporateCustomerService.cs
-using Business.Requests.CorporateCustomer;
+﻿using Business.Requests.CorporateCustomer;
+using Business.Requests.Customers;
 using Business.Responses.CorporateCustomer;
+using Business.Responses.Customers;
 
 namespace Business.Abstract
 {
     public interface ICorporateCustomerService
     {
-        GetCorporateCustomerListResponse GetList(GetCorporateCustomerListRequest request);
-
-        GetCorporateCustomerByIdResponse GetById(GetCorporateCustomerByIdRequest request);
-
         AddCorporateCustomerResponse Add(AddCorporateCustomerRequest request);
-
         UpdateCorporateCustomerResponse Update(UpdateCorporateCustomerRequest request);
-
         DeleteCorporateCustomerResponse Delete(DeleteCorporateCustomerRequest request);
+        GetCorporateCustomerListResponse GetList(GetCorporateCustomerListRequest request);
     }
 }

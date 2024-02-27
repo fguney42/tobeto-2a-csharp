@@ -9,6 +9,5 @@ public class EfBrandDal : EfEntityRepositoryBase<Brand, int, RentACarContext>, I
 {
     public EfBrandDal(RentACarContext context) : base(context)
     {
-
     }
 }

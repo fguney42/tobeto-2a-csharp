@@ -1,10 +1,8 @@
-﻿namespace Core.CrossCuttingConcerns.Exceptions
+﻿namespace Core.CrossCuttingConcerns.Exceptions;
+
+public class BusinessException : Exception // is-a relationship
 {
-    public class BusinessException : Exception
+    public BusinessException(string message) : base(message)
     {
-        public BusinessException(string message) : base(message)
-        {
-            
-        }
     }
 }

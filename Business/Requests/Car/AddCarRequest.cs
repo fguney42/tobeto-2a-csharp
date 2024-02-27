@@ -2,16 +2,8 @@
 {
     public class AddCarRequest
     {
-        public string Name { get; set; }
-        public int ColorId { get; set; }
-        public int ModelId { get; set; }
-        public string CarState { get; set; }
-        public int Kilometer { get; set; }
-        public short ModelYear { get; set; }
-        public string Plate { get; set; }
-        public AddCarRequest(string name, int colorId, int modelId, string carState, int kilometer, short modelYear, string plate)
+        public AddCarRequest(int colorId, int modelId, string carState, int kilometer, int modelYear, string plate)
         {
-            Name = name;
             ColorId = colorId;
             ModelId = modelId;
             CarState = carState;
@@ -19,5 +11,12 @@
             ModelYear = modelYear;
             Plate = plate;
         }
+
+        public int ColorId { get; set; }
+        public int ModelId { get; set; }
+        public string CarState { get; set; }
+        public int Kilometer { get; set; }
+        public int ModelYear { get; set; }
+        public string Plate { get; set; }
     }
 }

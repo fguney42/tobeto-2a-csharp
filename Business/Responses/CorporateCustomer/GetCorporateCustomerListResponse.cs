@@ -1,10 +1,20 @@
-﻿// GetCorporateCustomerListResponse.cs
-using Business.Dtos.CorporateCustomer;
+﻿using Business.Dtos.CorporateCustomer;
+using Business.Dtos.Customers;
 
-namespace Business.Responses.CorporateCustomer
+namespace Business.Responses.Customers
 {
     public class GetCorporateCustomerListResponse
     {
-        public ICollection<CorporateCustomerListItemDto> Items { get; set; }
+        public ICollection<CorporateCustomersListItemDto> Items { get; set; }
+
+        public GetCorporateCustomerListResponse()
+        {
+            Items = Array.Empty<CorporateCustomersListItemDto>();
+        }
+
+        public GetCorporateCustomerListResponse(ICollection<CorporateCustomersListItemDto> items)
+        {
+            Items = items;
+        }
     }
 }

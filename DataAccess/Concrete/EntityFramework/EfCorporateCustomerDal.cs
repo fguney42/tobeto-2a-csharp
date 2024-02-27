@@ -5,14 +5,10 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DataAccess.Concrete
+namespace DataAccess.Concrete.EntityFramework
 {
-
-    public class EfCorporateCustomerDal :
-        EfEntityRepositoryBase<CorporateCustomer, int, RentACarContext>, ICorporateCustomerDal
+    public class EfCorporateCustomerDal : EfEntityRepositoryBase<CorporateCustomer, int, RentACarContext>, ICorporateCustomerDal
     {
         public EfCorporateCustomerDal(RentACarContext context) : base(context)
         {

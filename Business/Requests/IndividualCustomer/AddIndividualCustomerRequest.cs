@@ -1,11 +1,23 @@
-﻿// AddIndividualCustomerRequest
-namespace Business.Requests.IndividualCustomer
+﻿using Core.Entities;
+
+namespace Entities.Concrete
 {
-    public class AddIndividualCustomerRequest
+    public class AddIndividualCustomerRequest : Entity<int>
     {
-        public int UserId { get; set; } // Assuming UserId is required for creating an individual customer
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string NationalIdentity { get; set; }
+
+        public AddIndividualCustomerRequest()
+        {
+
+        }
+
+        public AddIndividualCustomerRequest(string firstName, string lastName, string nationalIdentity)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            NationalIdentity = nationalIdentity;
+        }
     }
 }
